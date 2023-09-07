@@ -1,0 +1,23 @@
+<script>
+    // if satu kondisi
+    let pelanggan = "Budi Santoso";
+    let TotalBelanja = 150000;
+    let keterangan = '';
+
+    if (TotalBelanja > 100000){
+        keterangan = "Selamat " + pelanggan + " Anda mendapatkan Hadiah";
+    }
+
+    else {
+        keterangan = "Terima Kasih " + pelanggan + " Sudah Belanja";
+    }
+
+    document.write("Atas Nama Pelanggan " + pelanggan + " Dengan Total Belanja " + TotalBelanja + " Keterangan " + keterangan );
+</script>
+<script>
+    // ternary atau shortcut IF ELSE dalam 2 kondisi di satu waktu dan untuk menentukan kondisi tersebut tergantung variabel kunci
+    let siswa = "Budi santoso";
+    let nilai = 75;
+    let ket = (nilai >= 60) ? "Lulus" : "Gagal";
+    document.write(" <br> siswa bernama " + siswa + " dengan nilai " + nilai + " dinyatakan " + ket);
+</script>
