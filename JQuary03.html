@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $("document").ready(function() {
+            $("#div1").hover(function() {
+                $(this).css({
+                    background: "url('https://i.pinimg.com/564x/b0/52/f8/b052f8050d24863138a71b9d3aeacf13.jpg')",
+                    backgroundSize: "cover"
+                });
+            });
+            $("#div1").mouseout(function() {
+                $(this).css({
+                    background: "blue"
+                });
+            });
+            $("#div2").hover(function() {
+                $(this).css({
+                    background: "url('https://scontent.fcgk18-2.fna.fbcdn.net/v/t1.6435-9/42482915_1958599204203981_9065091432456388608_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=9267fe&_nc_ohc=G4NYVALz5bcAX8yDBp2&_nc_ht=scontent.fcgk18-2.fna&oh=00_AfBlOtND-_DnqZ-xeKjopxZcSOOu8--a4CF3mH9KTftfag&oe=652F3C87')",
+                    backgroundSize: "cover"
+                });
+            });
+            $("#div2").mouseout(function() {
+                $(this).css({
+                    background: "blue"
+                });
+            });
+            $("#div3").hover(function() {
+                $(this).css({
+                    background: "url('https://asset.kompas.com/crops/ZooJx7Zw6jqaVJeVsWEEVyOkor0=/27x0:863x558/750x500/data/photo/2023/02/18/63f02d9393e94.jpg')",
+                    backgroundSize: "cover"
+                });
+            });
+            $("#div3").mouseout(function() {
+                $(this).css({
+                    background: "blue"
+                });
+            });
+        })
+    </script>
+</head>
+<body>
+    
+    <h2>Letakan kursor ke masing-masing untuk melihat gambar</h2>
+
+    <div id="div1">
+        Hewan Ayam
+    </div>
+
+    <div id="div2">
+        Hewan Bebek
+    </div>
+
+    <div id="div3">
+        Hewan Burung
+    </div>
+
+</body>
+</html>
