@@ -1,0 +1,41 @@
+DML
+
+// insert tanpa column
+INSERT INTO jenis_produk VALUES 
+('', 'Elektronik'), 
+('', 'Funiture'),
+('', 'Makanan'),
+('', 'Minuman');
+
+// INSERT menggunakan nama kolom
+INSERT INTO produk (nama, harga, stok, idjenis, foto) VALUES
+('TV', 200000, 3, 1, 'tv.jpg'),
+('Meja', 1000000, 3, 2, 'meja.jpg');
+
+// Update
+UPDATE produk SET nama = 'TV LCD' , harga = 4000000 WHERE id = 1;
+
+// Delete
+DELETE FROM produk WHERE id = 2;
+
+// SELECT beberapa kolom
+SELECT nama, harga, stok FROM produk;
+
+// klausa WHERE
+SELECT nama, harga, stok FROM produk WHERE stok < 40;
+
+SELECT * FROM produk WHERE nama = 'Sprite';
+
+SELECT * FROM produk WHERE stok <= 10;
+
+SELECT *  FROM produk ORDER BY harga DESC;
+
+SELECT *  FROM produk ORDER BY harga ASC;
+
+// INSERT menggunakan nama kolom tambahan
+INSERT INTO produk (nama, harga, stok, idjenis, foto) VALUES
+('Nasi Goreng', 20000, 10, 3, 'nasi'),
+('Coca-cola', 3000, 20, 4, 'cola'),
+('Kursi', 400000, 20, 2, 'kursi'),
+('Handphone', 5000000, 10, 1, 'hp'),
+('Sprite', 4000, 4, 4, 'sprite');
