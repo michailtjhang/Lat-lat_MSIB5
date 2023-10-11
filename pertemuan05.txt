@@ -1,0 +1,71 @@
+* QUERY SELECT DASAR dan LANJUTAN *
+
+// dalam database dbpos
+
+// SUB QUERY
+SELECT * FROM produk WHERE stok = (SELECT MAX(stok) FROM produk);
+
+SELECT * FROM produk WHERE stok = (SELECT MIN(stok) FROM produk);
+
+SELECT * FROM produk WHERE stok = (SELECT AVG(stok) FROM produk);
+
+// KLAUSA DISTINCT
+SELECT DISTINCT harga_jual FROM produk;
+
+SELECT DISTINCT stok FROM produk;
+
+// KLAUSA SELECT CASE dengan menampilkan kolom yang di pilih
+SELECT nama, harga_jual, stok,
+    CASE
+    WHEN stok >= 5 THEN 'CUKUP'
+    ELSE 'KURANG'
+    END AS keterangan FROM produk;
+
+// KLAUSA SELECT CASE tanpa menampilkan kolom yg lain
+SELECT CASE
+    WHEN jenis_produk_id = 1 THEN 'ELEKTRONIK'
+    WHEN jenis_produk_id = 2 THEN 'FURNITURE'
+    WHEN jenis_produk_id = 3 THEN 'MAKANAN'
+    WHEN jenis_produk_id = 4 THEN 'MIMUMAN'
+    ELSE 'KOMPUTER'
+    END AS kategori, SUM(stok) AS jml FROM produk GROUP BY jenis_produk_id;
+
+
+// KLAUSA GROUP BY
+SELECT jenis_produk_id, SUM(harga_jual) AS total_harga_jual FROM produk GROUP BY jenis_produk_id;
+
+// KLAUSA HAVING
+SELECT stok, COUNT(stok) AS jumlah_stok FROm produk GROUP BY stok HAVING COUNT(stok) < 3;
+ 
+SELECT jenis_produk_id, COUNT(jenis_produk_id) AS jumlah_jenis_produk FROM produk GROUP BY jenis_produk_id HAVING count(jenis_produk_id) > 3;
+
+
+
+* STUDI KASUS *
+
+// Tampilkan data pelanggan yang lahirnya antara tahun 1980 sampai 1996
+SELECT * FROM pelanggan WHERE YEAR(tgl_lahir) BETWEEN 1980 AND 1996;
+
+// Tampilkan data pelanggan yang lahirnya tahun 1992
+SELECT * FROM pelanggan WHERE YEAR(tgl_lahir) = 1992;
+
+// Tampilkan data pelanggan yang lahirnya bulan Mei
+SELECT * FROM pelanggan WHERE MONTH(tgl_lahir) = 05;
+
+// Tampilkan data pelanggan : nama, tmp_lahir, tgl_lahir dan umur (selisih tahun sekarang dikurang tahun kelahiran)
+SELECT nama, tmp_lahir, tgl_lahir, (YEAR(NOW()) - YEAR(tgl_lahir)) AS umur FROM pelanggan;
+
+
+// Berapa jumlah pelanggan yang tahun lahirnya 1992
+SELECT tgl_lahir, COUNT(tgl_lahir) AS jml FROM pelanggan WHERE YEAR(tgl_lahir) = 1992;
+
+// Berapa jumlah pelanggan perempuan yang tempat lahirnya di Jakarta
+SELECT nama, COUNT(jk) AS jml FROM pelanggan WHERE jk = 'P' AND tmp_lahir = 'Jakarta';
+
+// Tampilkan data produk : id, nama, stok dan informasi jika stok telah sampai batas minimal atau kurang dari minimum stok dengan informasi ‘segera belanja’ jika tidak ‘stok aman’.
+SELECT id, nama, stok,
+    CASE
+    WHEN stok <= min_stok THEN 'SEGERA BELANJA'
+    ELSE 'STOK AMAN'
+    END AS informasi
+    FROM produk;
