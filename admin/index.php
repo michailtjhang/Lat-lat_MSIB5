@@ -1,4 +1,8 @@
 <?php  
+    include_once 'koneksi.php';
+    include_once 'models/jenis_produk.php';
+    include_once 'models/kartu_pelanggan.php';
+    include_once 'models/produk.php';
     include_once 'top.php';
     include_once 'menu.php';
 ?>
