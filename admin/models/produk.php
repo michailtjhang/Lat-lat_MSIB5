@@ -21,6 +21,21 @@ class produk{
 
         return $rs;
     }
+
+    public function getProduk($id) {
+        $sql = "SELECT p.*, j.nama AS jenis
+                FROM produk p
+                INNER JOIN jenis_produk j
+                ON p.jenis_produk_id = j.id
+                WHERE p.id = ?";
+
+        // menggunakan mekanisme prepere statement PDO
+        $ps = $this->koneksi->prepare($sql);
+        $ps->execute([$id]);
+        $rs = $ps->fetch();
+
+        return $rs;
+    }
 }
 
 ?>
