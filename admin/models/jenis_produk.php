@@ -18,6 +18,13 @@ class jenis_produk{
 
         return $rs;
     }
+
+    public function save($data) {
+        $sql = "INSERT INTO jenis_produk (nama) VALUES (?)";
+
+        $ps = $this->koneksi->prepare($sql);
+        $ps->execute($data);
+    }
 }
 
 ?>
