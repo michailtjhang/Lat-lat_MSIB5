@@ -17,6 +17,7 @@ $tombol = $_REQUEST['proses'];
 
 switch ($tombol) {
     case 'save': $model->save($data); break;
+    case 'ubah': $data[] = $_POST['idx']; $model->ubah($data);
     default:
     header('Location:index.php?url=jenisProduk');
     break;

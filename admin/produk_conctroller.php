@@ -20,6 +20,8 @@ $tombol = $_REQUEST['proses'];
 
 switch ($tombol) {
     case 'save': $model->save($data); break;
+    case 'ubah': $data[] = $_POST['idx']; $model->ubah($data);
+    case 'hapus': unset($data); $data[] = $_POST['idx']; $model->hapus($data);
     default:
     header('location:index.php?url=produk');
     break;

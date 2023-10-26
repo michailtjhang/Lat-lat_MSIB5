@@ -19,8 +19,25 @@ class jenis_produk{
         return $rs;
     }
 
+    public function getJenis($id) {
+        $sql = "SELECT * FROM jenis_produk WHERE id = ?";
+
+        $ps = $this->koneksi->prepare($sql);
+        $ps->execute([$id]);
+        $rs = $ps->fetch();
+
+        return $rs;
+    }
+
     public function save($data) {
         $sql = "INSERT INTO jenis_produk (nama) VALUES (?)";
+
+        $ps = $this->koneksi->prepare($sql);
+        $ps->execute($data);
+    }
+
+    public function ubah($data) {
+        $sql = "UPDATE jenis_produk SET nama = ? WHERE id = ?";
 
         $ps = $this->koneksi->prepare($sql);
         $ps->execute($data);

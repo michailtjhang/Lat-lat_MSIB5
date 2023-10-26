@@ -31,12 +31,14 @@ $data_jenisProduk = $model->dataJenis();
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Jenis Produk</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Jenis Produk</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -45,6 +47,13 @@ $data_jenisProduk = $model->dataJenis();
                                         <tr>
                                             <td><?= $id; ?></td>
                                             <td><?= $row['nama']; ?></td>
+                                            <td>
+                                                <form action="jenis_controller.php" method="post">
+                                                    <a href="index.php?url=jenis_form&idedit=<?= $row['id'] ?>">
+                                                        <button type="button" class="btn btn-warning btn-sm">Ubah</button>
+                                                    </a>
+                                                </form>
+                                            </td>
                                         </tr>
                                         <?php $id++; ?>
 		                                <?php endforeach; ?>

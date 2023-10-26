@@ -37,7 +37,7 @@ $data_produk = $model->dataProduk();
                                             <th>Stok</th>
                                             <th>Minimal Stok</th>
                                             <th>Jenis Produk</th>
-                                            <th>Aksi</th>
+                                            <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -50,7 +50,7 @@ $data_produk = $model->dataProduk();
                                             <th>Stok</th>
                                             <th>Minimal Stok</th>
                                             <th>Jenis Produk</th>
-                                            <th>Aksi</th>
+                                            <the scope="col">Aksi</the>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -66,10 +66,15 @@ $data_produk = $model->dataProduk();
                                             <td><?= $row['min_stok']; ?></td>
                                             <td><?= $row['jenis']; ?></td>
                                             <td>
-                                                <form>
+                                                <form action="produk_conctroller.php" method="post">
+                                                    <a href="index.php?url=produk_form&idedit=<?= $row['id'] ?>">
+                                                        <button type="button" class="btn btn-warning btn-sm">Ubah</button>
+                                                    </a>
+                                                    <button type="submit" class="btn btn-danger btn-sm" name="proses" value="hapus" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus?')">Hapus</button>
                                                     <a href="index.php?url=produk_details&id=<?= $row['id'] ?>">
                                                         <button type="button" class="btn btn-info btn-sm">Details</button>
                                                     </a>
+                                                    <input type="hidden" name="idx" value="<?= $row['id'] ?>">
                                                 </form>
                                             </td>
                                         </tr>
