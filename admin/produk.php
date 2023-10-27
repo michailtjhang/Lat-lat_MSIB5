@@ -3,6 +3,9 @@
 $model =  new produk();
 $data_produk = $model->dataProduk();
 
+// $member = $_SESSION['member'];
+// if( isset($member )) {
+
 ?>
 
 <main>
@@ -86,3 +89,10 @@ $data_produk = $model->dataProduk();
                         </div>
                     </div>
                 </main>
+
+                <?php 
+                // } else {
+                //     echo '<script> alert("Anda Tidak bisa Masuk!!!"); history.back(); </script>';
+                // }
+                
+                ?>

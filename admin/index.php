@@ -1,10 +1,18 @@
 <?php  
+
+    session_start();
     include_once 'koneksi.php';
     include_once 'models/jenis_produk.php';
     include_once 'models/kartu_pelanggan.php';
     include_once 'models/produk.php';
+
+    // $sesi = $_SESSION['member'];
+    // if( isset($member )) {
+
     include_once 'top.php';
     include_once 'menu.php';
+
+    
 ?>
 <div>
     <div class="container-fluid px-4">
@@ -28,4 +36,8 @@
 </div>
 <?php  
     include_once 'button.php';
+
+    // } else {
+    //     echo '<script> alert("Anda Tidak bisa Masuk!!!"); history.back(); </script>';
+    // }
 ?>
