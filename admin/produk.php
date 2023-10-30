@@ -70,14 +70,20 @@ $data_produk = $model->dataProduk();
                                             <td><?= $row['jenis']; ?></td>
                                             <td>
                                                 <form action="produk_conctroller.php" method="post">
+                                                    <a href="index.php?url=produk_details&id=<?= $row['id'] ?>">
+                                                        <button type="button" class="btn btn-info btn-sm">Details</button>
+                                                    </a>
+                                                    <?php 
+                                                        if ($sesi['role'] != 'staff') :
+                                                    ?>
                                                     <a href="index.php?url=produk_form&idedit=<?= $row['id'] ?>">
                                                         <button type="button" class="btn btn-warning btn-sm">Ubah</button>
                                                     </a>
                                                     <button type="submit" class="btn btn-danger btn-sm" name="proses" value="hapus" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus?')">Hapus</button>
-                                                    <a href="index.php?url=produk_details&id=<?= $row['id'] ?>">
-                                                        <button type="button" class="btn btn-info btn-sm">Details</button>
-                                                    </a>
                                                     <input type="hidden" name="idx" value="<?= $row['id'] ?>">
+                                                    <?php  
+                                                        endif;
+                                                    ?>
                                                 </form>
                                             </td>
                                         </tr>

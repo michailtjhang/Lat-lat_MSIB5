@@ -3,6 +3,8 @@
 $model =  new jenis_produk();
 $data_jenisProduk = $model->dataJenis();
 
+if ($sesi['role'] != 'staff') {
+
 ?>
 
 <main>
@@ -63,3 +65,7 @@ $data_jenisProduk = $model->dataJenis();
                         </div>
                     </div>
                 </main>
+
+                <?php  
+                    } else { echo '<script> alert("Anda Tidak boleh Masuk!!!"); history.back(); </script>'; }
+                ?>

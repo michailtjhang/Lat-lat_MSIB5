@@ -6,8 +6,8 @@
     include_once 'models/kartu_pelanggan.php';
     include_once 'models/produk.php';
 
-    // $sesi = $_SESSION['member'];
-    // if( isset($member )) {
+    $sesi = $_SESSION['MEMBER'];
+    if( isset( $sesi )) {
 
     include_once 'top.php';
     include_once 'menu.php';
@@ -37,7 +37,7 @@
 <?php  
     include_once 'button.php';
 
-    // } else {
-    //     echo '<script> alert("Anda Tidak bisa Masuk!!!"); history.back(); </script>';
-    // }
+    } else {
+        echo '<script> alert("Anda Tidak bisa Masuk!!!"); history.back(); </script>';
+    }
 ?>

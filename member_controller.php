@@ -15,7 +15,7 @@ $obj = new member();
 $rs = $obj->cekLogin($data);
 
 if( !empty($rs) ){
-    $_SESSION['member'] = $rs;
+    $_SESSION['MEMBER'] = $rs;
 
     header('location:admin/index.php?url=produk');
 } else{

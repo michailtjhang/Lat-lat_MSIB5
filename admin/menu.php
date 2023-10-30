@@ -16,7 +16,13 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    <?php 
+                                        if ($sesi['role'] != 'staff') :
+                                    ?>
                                     <a class="nav-link" href="index.php?url=jenisProduk">Jenis Produk</a>
+                                    <?php 
+                                        endif;
+                                    ?>
                                     <a class="nav-link" href="index.php?url=kartuPelanggan">Kartu Pelanggan</a>
                                     <a class="nav-link" href="index.php?url=produk">Produk</a>
                                 </nav>
