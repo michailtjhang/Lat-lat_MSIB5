@@ -1,0 +1,272 @@
+* FUNCTION DAN PROCEDURE *
+
+* Pertemuan 09 *
+
+// PROCEDURE
+
+MariaDB [dbpos1]> DELIMITER $$
+MariaDB [dbpos1]> CREATE PROCEDURE showProduk()
+    -> BEGIN
+    -> SELECT kode, nama, stok FROM produk;
+    -> END $$
+Query OK, 0 rows affected, 5 warnings (0.020 sec)
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> CALL showProduk();
++------+--------------------+------+
+| kode | nama               | stok |
++------+--------------------+------+
+| TV01 | Televisi 21 inch   |    5 |
+| TV02 | Televisi 40 inch   |    4 |
+| K001 | Kulkas 2 pintu     |    6 |
+| M001 | Meja Makan         |   12 |
+| TK01 | Teh Kotak          |    6 |
+| PC01 | PC Desktop HP      |    9 |
+| TB01 | Teh Botol          |   53 |
+| AC01 | Notebook Acer      |    7 |
+| LN01 | Notebook Lenovo    |    9 |
+| L004 | Laptop HP          |   20 |
+| M002 | Meja Kayu          |   15 |
+| KS01 | Keripik Singkong   |   50 |
+| SP01 | Smartphone Samsung |   20 |
++------+--------------------+------+
+
+
+// PROCEDURE dengan parameter
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> DELIMITER $$
+MariaDB [dbpos1]> CREATE PROCEDURE showProdukElektronik(id int)
+    -> BEGIN
+    -> SELECT * FROM produk WHERE jenis_produk_id = id;
+    -> END $$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> CALL showProdukElektronik(1);
++----+------+--------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama               | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+--------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch   |    3500000 |    5040000 |    5 |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch   |    5500000 |    7440000 |    4 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu     |    3500000 |    4680000 |    6 |        2 |               1 |
+| 13 | SP01 | Smartphone Samsung |    8000000 |   10000000 |   20 |        3 |               1 |
++----+------+--------------------+------------+------------+------+----------+-----------------+
+
+
+// PROCEDURE dengan parameter dan menginputkan data
+
+MariaDB [dbpos1]> DELIMITER $$
+MariaDB [dbpos1]> CREATE PROCEDURE inputPesanan(
+    -> tanggal date, total double, pelanggan_id int
+    -> )
+    -> BEGIN
+    -> INSERT INTO pesanan (tanggal, total, pelanggan_id) VALUES
+    -> (tanggal, total, pelanggan_id);
+    -> END $$
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> CALL inputPesanan('2015-11-04', 30000, 9);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [dbpos1]> SELECT * FROM pesanan;
++----+------------+---------+--------------+
+| id | tanggal    | total   | pelanggan_id |
++----+------------+---------+--------------+
+|  1 | 2015-11-04 | 9720000 |            1 |
+|  2 | 2015-11-04 |   17500 |            3 |
+|  3 | 2015-11-04 |       0 |            6 |
+|  4 | 2015-11-04 |       0 |            7 |
+|  5 | 2015-11-04 |       0 |           10 |
+|  6 | 2015-11-04 |       0 |            2 |
+|  7 | 2015-11-04 |       0 |            5 |
+|  8 | 2015-11-04 |       0 |            4 |
+|  9 | 2015-11-04 |       0 |            8 |
+| 10 | 2015-11-04 |       0 |            9 |
+| 11 | 2015-11-04 |   30000 |            9 |
++----+------------+---------+--------------+
+
+
+// melihat list PROCEDURE
+
+MariaDB [dbpos1]> SELECT routine_name, routine_type, routine_schema
+    -> FROM information_schema.routines WHERE routine_type = 'PROCEDURE'
+    -> AND routine_schema = 'dbpos1';
++----------------------+--------------+----------------+
+| routine_name         | routine_type | routine_schema |
++----------------------+--------------+----------------+
+| inputPesanan         | PROCEDURE    | dbpos1         |
+| showProduk           | PROCEDURE    | dbpos1         |
+| showProdukElektronik | PROCEDURE    | dbpos1         |
++----------------------+--------------+----------------+
+
+
+// 
+
+MariaDB [dbpos1]> DELIMITER $$
+MariaDB [dbpos1]> CREATE PROCEDURE totalHarga(
+    -> in harga double, in jml int, out total double)
+    -> BEGIN
+    -> SET total = harga * jml;
+    -> SELECT @total;
+    -> END $$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> CALL totalHarga(25000, 4, @totalHarga);
++--------+
+| @total |
++--------+
+| NULL   |
++--------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [dbpos1]> SELECT @totalHarga;
++-------------+
+| @totalHarga |
++-------------+
+|      100000 |
++-------------+
+
+
+// 
+
+MariaDB [dbpos1]> DELIMITER $$
+MariaDB [dbpos1]> CREATE PROCEDURE pro_naik(
+    -> IN jenis_produk INT,
+    -> IN persentasi_kenaikan INT)
+    -> BEGIN
+    -> UPDATE produk SET harga_jual = harga_jual + (harga_jual * persentasi_kenaikan /100)
+    -> WHERE jenis_produk_id = jenis_produk;
+    -> END $$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> SELECT nama, harga_jual, jenis_produk_id FROM produk;
++--------------------+------------+-----------------+
+| nama               | harga_jual | jenis_produk_id |
++--------------------+------------+-----------------+
+| Televisi 21 inch   |    5040000 |               1 |
+| Televisi 40 inch   |    7440000 |               1 |
+| Kulkas 2 pintu     |    4680000 |               1 |
+| Meja Makan         |     600000 |               2 |
+| Teh Kotak          |       3500 |               4 |
+| PC Desktop HP      |    9600000 |               5 |
+| Teh Botol          |       2500 |               4 |
+| Notebook Acer      |   10800000 |               5 |
+| Notebook Lenovo    |   12000000 |               5 |
+| Laptop HP          |   13000000 |               5 |
+| Meja Kayu          |     700000 |               2 |
+| Keripik Singkong   |      15000 |               3 |
+| Smartphone Samsung |   10000000 |               1 |
++--------------------+------------+-----------------+
+13 rows in set (0.001 sec)
+
+MariaDB [dbpos1]> CALL pro_naik(5, 4);
+Query OK, 4 rows affected (0.006 sec)
+
+MariaDB [dbpos1]> SELECT nama, harga_jual, jenis_produk_id FROM produk;
++--------------------+------------+-----------------+
+| nama               | harga_jual | jenis_produk_id |
++--------------------+------------+-----------------+
+| Televisi 21 inch   |    5040000 |               1 |
+| Televisi 40 inch   |    7440000 |               1 |
+| Kulkas 2 pintu     |    4680000 |               1 |
+| Meja Makan         |     600000 |               2 |
+| Teh Kotak          |       3500 |               4 |
+| PC Desktop HP      |    9984000 |               5 |
+| Teh Botol          |       2500 |               4 |
+| Notebook Acer      |   11232000 |               5 |
+| Notebook Lenovo    |   12480000 |               5 |
+| Laptop HP          |   13520000 |               5 |
+| Meja Kayu          |     700000 |               2 |
+| Keripik Singkong   |      15000 |               3 |
+| Smartphone Samsung |   10000000 |               1 |
++--------------------+------------+-----------------+
+
+
+// FUNCTION
+
+MariaDB [dbpos1]> DELIMITER $$
+MariaDB [dbpos1]> CREATE FUNCTION umur(tgl_lahir DATE)
+    -> RETURNS INT
+    -> BEGIN
+    -> DECLARE umur INT;
+    -> SET umur = YEAR(CURDATE()) - YEAR(tgl_lahir);
+    -> RETURN umur;
+    -> END $$
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> SELECT * FROM pelanggan;
++----+------+---------------+------+------------+------------+----------------------+----------+
+| id | kode | nama          | jk   | tmp_lahir  | tgl_lahir  | email                | kartu_id |
++----+------+---------------+------+------------+------------+----------------------+----------+
+|  1 | C001 | Agung Sedayu  | L    | Solo       | 2010-01-01 | sedayu@gmail.com     |        1 |
+|  2 | C002 | Pandan Wangi  | P    | Yogyakarta | 1950-01-01 | wangi@gmail.com      |        2 |
+|  3 | C003 | Sekar Mirah   | P    | Kediri     | 1983-02-20 | mirah@yahoo.com      |        1 |
+|  4 | C004 | Swandaru Geni | L    | Kediri     | 1981-01-04 | swandaru@yahoo.com   |        4 |
+|  5 | C005 | Pradabashu    | L    | Pati       | 1985-04-02 | prada85@gmail.com    |        2 |
+|  6 | C006 | Gayatri Dwi   | P    | Jakarta    | 1987-11-28 | gaya87@gmail.com     |        1 |
+|  7 | C007 | Dewi Gyat     | P    | Jakarta    | 1988-12-01 | giyat@gmail.com      |        1 |
+|  8 | C008 | Andre Haru    | L    | Surabaya   | 1990-07-15 | andre.haru@gmail.com |        4 |
+|  9 | C009 | Ahmad Hasan   | L    | Surabaya   | 1992-10-15 | ahasan@gmail.com     |        4 |
+| 10 | C010 | Cassanndra    | P    | Belfast    | 1990-11-20 | casa90@gmail.com     |        1 |
++----+------+---------------+------+------------+------------+----------------------+----------+
+10 rows in set (0.000 sec)
+
+MariaDB [dbpos1]> SELECT kode, nama, jk, umur(tgl_lahir) AS umur FROM pelanggan;
++------+---------------+------+------+
+| kode | nama          | jk   | umur |
++------+---------------+------+------+
+| C001 | Agung Sedayu  | L    |   13 |
+| C002 | Pandan Wangi  | P    |   73 |
+| C003 | Sekar Mirah   | P    |   40 |
+| C004 | Swandaru Geni | L    |   42 |
+| C005 | Pradabashu    | L    |   38 |
+| C006 | Gayatri Dwi   | P    |   36 |
+| C007 | Dewi Gyat     | P    |   35 |
+| C008 | Andre Haru    | L    |   33 |
+| C009 | Ahmad Hasan   | L    |   31 |
+| C010 | Cassanndra    | P    |   33 |
++------+---------------+------+------+
+
+
+// TRIGGER
+
+MariaDB [dbpos1]> DELIMITER $$
+MariaDB [dbpos1]> CREATE TRIGGER cek_pembayaran BEFORE INSERT ON pembayaran
+    -> FOR EACH ROW
+    -> BEGIN
+    -> DECLARE total_bayar DECIMAL(10, 2);
+    -> DECLARE total_pesanan DECIMAL(10, 2);
+    -> SELECT SUM(jumlah) INTO total_bayar FROM pembayaran WHERE pesanan_id = NEW.pesanan_id;
+    -> SELECT total INTO total_pesanan FROM pesanan WHERE id = NEW.pesanan_id;
+    -> IF total_bayar + NEW.jumlah >= total_pesanan THEN
+    -> SET NEW.status_pembayaran = 'Lunas';
+    -> END IF;
+    -> END $$
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [dbpos1]> DELIMITER ;
+MariaDB [dbpos1]> INSERT INTO pembayaran (nokuitansi, tanggal, jumlah, ke, pesanan_id, status_pembayaran)
+    -> VALUES ('KWI001', '2023-03-03', 200000, 1, 1, '');
+Query OK, 1 row affected (0.011 sec)
+
+MariaDB [dbpos1]> INSERT INTO pembayaran (nokuitansi, tanggal, jumlah, ke, pesanan_id, status_pembayaran)
+    -> VALUES ('INV004', '2023-03-04', 300000, 1, 11, '');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [dbpos1]> SELECT * FROM pembayaran;
++----+------------+------------+---------+------+------------+-------------------+
+| id | nokuitansi | tanggal    | jumlah  | ke   | pesanan_id | status_pembayaran |
++----+------------+------------+---------+------+------------+-------------------+
+|  1 | INV001     | 2022-01-01 |  500000 |    1 |          1 | NULL              |
+|  2 | INV002     | 2022-01-02 |  750000 |    2 |          2 | NULL              |
+|  3 | INV003     | 2022-01-03 | 1000000 |    3 |          3 | NULL              |
+|  4 | KWI001     | 2023-03-03 |  200000 |    1 |          1 |                   |
+|  5 | INV004     | 2023-03-04 |  300000 |    1 |         11 |                   |
++----+------------+------------+---------+------+------------+-------------------+

@@ -1,0 +1,103 @@
+* ERD DATABASE *
+
+// Membuat database pos
+CREATE DATABASE dbpos;
+
+// membuat table kartu
+CREATE TABLE kartu (
+    id integer AUTO_INCREMENT PRIMARY KEY,
+    kode varchar(6) UNIQUE,
+    nama varchar(30) NOT NULL,
+    diskon double,
+    iuran double);
+
+// membuat table pelanggan
+CREATE TABLE pelanggan (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    kode varchar(10) UNIQUE,
+    nama varchar(45),
+    jk char(1),
+    tmp_lahir varchar(30),
+    tgl_lahir date,
+    email varchar(45),
+    kartu_id int NOT NULL REFERENCES kartu(id));
+
+// membuat table pesanan
+CREATE TABLE pesanan (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tanggal date,
+    total double,
+    pelanggan_id int NOT NULL REFERENCES pelanggan(id));
+
+// membuat table pembayaran
+CREATE TABLE pembayaran(
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nokuitansi varchar(10) UNIQUE,
+    tanggal date,
+    jumlah double,
+    ke int,
+    pesanan_id int NOT NULL REFERENCES pesanan(id));
+
+// membuat table jenis_produk
+CREATE TABLE jenis_produk(
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nama varchar(45));
+
+// membuat table produk
+CREATE TABLE produk (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    kode varchar(10) UNIQUE,
+    nama varchar(45),
+    harga_beli double,
+    harga_jual double,
+    stok int,
+    min_stok int,
+    jenis_produk_id int NOT NULL REFERENCES jenis_produk(id));
+
+
+// menambahkan data ke table jenis_produk
+INSERT INTO jenis_produk VALUES 
+('', 'Elektronik'),
+('', 'Furnitur'),
+('', 'Makanan'),
+('', 'Minuman'),
+('', 'Komputer');
+
+// menambahkan data ke table produk
+INSERT INTO produk (kode, nama, harga_beli, harga_jual, stok, min_stok, jenis_produk_id) VALUES
+('TV01', 'Televisi 21 inch', 3500000, 5040000, 5, 2, 1),
+('TV02', 'Televisi 40 inch', 7000000, 9600000, 4, 2, 1);
+
+INSERT INTO `produk` (`id`, `kode`, `nama`, `harga_beli`, `harga_jual`, `stok`, `min_stok`, `jenis_produk_id`) VALUES 
+(NULL, 'K001', 'Kulkas 2 Pintu', '3500000', '4600000', '6', '2', '1'),
+(NULL, 'M001', 'Meja Makan', '500000', '600000', '4', '3', '2'),
+(NULL, 'TK01', 'Teh Kotak', '3000', '3500', '6', '10', '4');
+
+// Menambahkan data ke table pelanggan
+INSERT INTO `pelanggan` (`id`, `kode`, `nama`, `jk`, `tmp_lahir`, `tgl_lahir`, `email`, `kartu_id`) VALUES 
+(NULL, 'C001', 'Agung Sedayu', 'L', 'Solo', '2010-01-01', 'sedayu@gmail.com', ''), 
+(NULL, 'C002', 'Pandan Wangi', 'P', 'Yogyakarta', '1950-01-01', 'wangi@gmail.com', ''), 
+(NULL, 'C003', 'Sekar', 'P', 'Kediri', '1983-02-02', 'Sekar@gmail.com', ''), 
+(NULL, 'C004', 'Swenderu Geni', 'L', 'Kediri', '1981-01-04', 'swanderu@gmail.com', '');
+
+// menambahkan data ke table kartu
+INSERT INTO `kartu` (`id`, `kode`, `nama`, `diskon`, `iuran`) VALUES 
+(NULL, 'Gold', 'Gold Utama', '0.05', '100000'), 
+(NULL, 'PLAT', 'Platinum Jaya', '0.1', '150000'), 
+(NULL, 'SLV', 'Silver', '0.025', '50000'), 
+(NULL, 'NO', 'Non Member', '0', '0');
+
+// Menampilkan kode,nama,stok dari table produk yang stok-nya hanya 4
+SELECT kode, nama, stok FROM produk WHERE stok = 4;
+
+// Menampilkan seluruh data pelanggan yang tempat lahirnya Jakarta
+SELECT * FROM pelanggan WHERE tmp_lahir = 'Jakarta';
+
+// Menampilkan data pelanggan mulai dari yang paling muda
+SELECT * FROM pelanggan ORDER BY tgl_lahir DESC;
+
+// menampilkan data produk yang stoknya 3 dan 10
+SELECT * FROM produk WHERE stok = 3 OR stok = 10;
+
+// Menampilkan data produk yang harga jualnya kurang dari 5 juta tetapi lebih dari 500 ribu
+SELECT * FROM produk WHERE harga_jual < 5000000 AND harga_jual >500000;

@@ -1,0 +1,129 @@
+
+
+
+MariaDB [dbpos1]> CREATE VIEW lihat_vendor AS SELECT nomor, nama, kota FROM vendor;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [dbpos1]> SELECT * FROM lihat_vendor;
++-------+----------------------+----------+
+| nomor | nama                 | kota     |
++-------+----------------------+----------+
+| V001  | PT Guna Samudra      | Surabaya |
+| V002  | PT Pondok C9         | Depok    |
+| V003  | CV Jaya Raya Semesta | Jakarta  |
+| V004  | PT Lekulo X          | Kebumen  |
+| V005  | PT IT Prima          | Jakarta  |
++-------+----------------------+----------+
+
+
+CREATE VIEW pesanan_pelanggan_kartu
+    AS SELECT pesanan.id, pesanan.tanggal, pesanan.total, pelanggan.kode, pelanggan.nama, kartu.nama AS nama_kartu, kartu.diskon
+    FROM pesanan INNER JOIN pelanggan ON pesanan.pelanggan_id = pelanggan.id
+    INNER JOIN kartu ON pelanggan.kartu_id = kartu.id;
+
+
+
+MariaDB [dbpos1]> START TRANSACTION;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbpos1]> INSERT INTO kartu (kode, nama, diskon, iuran) VALUES
+    -> ('PGU', 'Perunggu', 0.5, 2000);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [dbpos1]> SELECT * FROM kartu;
++----+------+---------------+--------+--------+
+| id | kode | nama          | diskon | iuran  |
++----+------+---------------+--------+--------+
+|  1 | GOLD | Gold Utama    |   0.05 | 100000 |
+|  2 | PLAT | Platinum Jaya |    0.1 | 150000 |
+|  3 | SLV  | Silver        |  0.025 |  50000 |
+|  4 | NO   | Non Member    |      0 |      0 |
+|  5 | PGU  | Perunggu      |    0.5 |   2000 |
++----+------+---------------+--------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpos1]> ROLLBACK;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [dbpos1]> SELECT * FROM kartu;
++----+------+---------------+--------+--------+
+| id | kode | nama          | diskon | iuran  |
++----+------+---------------+--------+--------+
+|  1 | GOLD | Gold Utama    |   0.05 | 100000 |
+|  2 | PLAT | Platinum Jaya |    0.1 | 150000 |
+|  3 | SLV  | Silver        |  0.025 |  50000 |
+|  4 | NO   | Non Member    |      0 |      0 |
++----+------+---------------+--------+--------+
+4 rows in set (0.001 sec)
+
+MariaDB [dbpos1]> START TRANSACTION;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbpos1]> INSERT INTO kartu (kode, nama, diskon, iuran) VALUES
+    -> ('PGU', 'Perunggu', 0.5, 2000);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [dbpos1]> ROLLBACK;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [dbpos1]> INSERT INTO kartu (kode, nama, diskon, iuran) VALUES
+    -> ('PGU', 'Perunggu', 0.5, 2000);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [dbpos1]> COMMIT;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbpos1]> SELECT * FROM kartu;
++----+------+---------------+--------+--------+
+| id | kode | nama          | diskon | iuran  |
++----+------+---------------+--------+--------+
+|  1 | GOLD | Gold Utama    |   0.05 | 100000 |
+|  2 | PLAT | Platinum Jaya |    0.1 | 150000 |
+|  3 | SLV  | Silver        |  0.025 |  50000 |
+|  4 | NO   | Non Member    |      0 |      0 |
+|  7 | PGU  | Perunggu      |    0.5 |   2000 |
++----+------+---------------+--------+--------+
+
+
+
+
+
+MariaDB [dbpos1]> START TRANSACTION;
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [dbpos1]> SAVEPOINT update_kartu;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbpos1]> UPDATE kartu set nama = 'Perunggu 1' WHERE id = 7;
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpos1]> SELECT * FROM kartu;
++----+------+---------------+--------+--------+
+| id | kode | nama          | diskon | iuran  |
++----+------+---------------+--------+--------+
+|  1 | GOLD | Gold Utama    |   0.05 | 100000 |
+|  2 | PLAT | Platinum Jaya |    0.1 | 150000 |
+|  3 | SLV  | Silver        |  0.025 |  50000 |
+|  4 | NO   | Non Member    |      0 |      0 |
+|  7 | PGU  | Perunggu 1    |    0.5 |   2000 |
++----+------+---------------+--------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbpos1]> ROLLBACK;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [dbpos1]> SELECT * FROM kartu;
++----+------+---------------+--------+--------+
+| id | kode | nama          | diskon | iuran  |
++----+------+---------------+--------+--------+
+|  1 | GOLD | Gold Utama    |   0.05 | 100000 |
+|  2 | PLAT | Platinum Jaya |    0.1 | 150000 |
+|  3 | SLV  | Silver        |  0.025 |  50000 |
+|  4 | NO   | Non Member    |      0 |      0 |
+|  7 | PGU  | Perunggu      |    0.5 |   2000 |
++----+------+---------------+--------+--------+
+5 rows in set (0.000 sec)
+
+
+ROLLBACK to update_kartu; // untuk kembali ke savepoint
