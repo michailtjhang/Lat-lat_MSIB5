@@ -1,0 +1,23 @@
+<!-- Latihan Looping dengan table HTML -->
+<table style="padding: 10; text-align: center; width: 100%;">
+    <thead>
+        <tr>
+            <td>No</td>
+            <td>Nama</td>
+            <td>Alamat</td>
+        </tr>
+    </thead>
+    <tbody>
+        <script>
+            var no, warna;
+            for (no=1; no <= 20; no++) {
+                warna = (no % 2 == 0) ? 'yellow' : 'blue';
+                document.write(`<tr bgcolor = "${warna}">
+                    <td>${no}</td>
+                    <td> Mahasiswa ${no} </td>
+                    <td> Kecematan bogor ${no} </td>
+                    </tr> `);
+            }
+        </script>
+    </tbody>
+</table>
